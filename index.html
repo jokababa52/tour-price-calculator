@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tour Price Calculator</title>
+  <style>
+    body { 
+      font-family: Arial, sans-serif; 
+      padding: 20px; 
+      max-width: 800px; 
+      margin: auto; 
+      background-color: #f35e29; /* Background color */
+    }
+    input { margin: 5px 0; padding: 8px; width: 100%; }
+    label { font-weight: bold; margin-top: 10px; display: block; }
+    button { 
+      margin-top: 10px; 
+      padding: 10px 20px; 
+      background-color: #22A9E6; /* Updated button color */
+      color: white; 
+      border: none; 
+      cursor: pointer; 
+    }
+    button:hover { 
+      background-color: #1a87c4; /* Darker shade for hover effect */
+    }
+    .result { margin-top: 20px; padding: 10px; background-color: #f4f4f4; }
+    .day-block { border: 1px solid #ccc; padding: 10px; margin-top: 10px; }
+  </style>
+</head>
+<body>
+
+  <h1>Tour Price Calculator</h1>
+
+  <div id="daysContainer">
+    <!-- Days will be added here dynamically -->
+  </div>
+
+  <button onclick="addDay()">Add Travel Day</button>
+  <button onclick="resetForm()">Reset All</button>
+
+  <div class="result" id="results"></div>
+
+  <script>
+    let dayCount = 0;
+
+    function addDay() {
+      dayCount++;
+      const dayDiv = document.createElement('div');
+      dayDiv.className = 'day-block';
+      dayDiv.id = `day${dayCount}`;
+      dayDiv.innerHTML = `
+        <h2>Day ${dayCount}</h2>
+        <label>Single Room Rate</label><input type="number" id="singleRoomRate${dayCount}" value="0">
+        <label>Double Room Rate</label><input type="number" id="doubleRoomRate${dayCount}" value="0">
+        <label>Triple Room Rate</label><input type="number" id="tripleRoomRate${dayCount}" value="0">
+        <label>Quad Room Rate</label><input type="number" id="quadRoomRate${dayCount}" value="0">
+
+        <label>Single Rooms</label><input type="number" id="singleRooms${dayCount}" value="0">
+        <label>Double Rooms</label><input type="number" id="doubleRooms${dayCount}" value="0">
+        <label>Triple Rooms</label><input type="number" id="tripleRooms${dayCount}" value="0">
+        <label>Quad Rooms</label><input type="number" id="quadRooms${dayCount}" value="0">
+
+        <label>Park Fee Adult</label><input type="number" id="parkFeeAdult${dayCount}" value="0">
+        <label>Park Fee Child</label><input type="number" id="parkFeeChild${dayCount}" value="0">
+        <label>Adults</label><input type="number" id="adults${dayCount}" value="0">
+        <label>Children</label><input type="number" id="children${dayCount}" value="0">
+
+        <label>Vehicle + Guide Cost Per Day</label><input type="number" id="vehicleGuideCostPerDay${dayCount}" value="0">
+
+        <label>Receiving Costs</label><input type="number" id="receivingCosts${dayCount}" value="0">
+        <label>Unforeseen Costs</label><input type="number" id="unforeseenCosts${dayCount}" value="0">
+      `;
+      document.getElementById('daysContainer').appendChild(dayDiv);
+    }
+
+    function calculateTourPrice() {
+      let totalCostPrice = 0;
+      let totalTravelers = 0;
+
+      for (let i = 1; i <= dayCount; i++) {
+        const singleRoomRate = parseFloat(document.getElementById(`singleRoomRate${i}`).value) || 0;
+        const doubleRoomRate = parseFloat(document.getElementById(`doubleRoomRate${i}`).value) || 0;
+        const tripleRoomRate = parseFloat(document.getElementById(`tripleRoomRate${i}`).value) || 0;
+        const quadRoomRate = parseFloat(document.getElementById(`quadRoomRate${i}`).value) || 0;
+
+        const singleRooms = parseInt(document.getElementById(`singleRooms${i}`).value) || 0;
+        const doubleRooms = parseInt(document.getElementById(`doubleRooms${i}`).value) || 0;
+        const tripleRooms = parseInt(document.getElementById(`tripleRooms${i}`).value) || 0;
+        const quadRooms = parseInt(document.getElementById(`quadRooms${i}`).value) || 0;
+
+        const parkFeeAdult = parseFloat(document.getElementById(`parkFeeAdult${i}`).value) || 0;
+        const parkFeeChild = parseFloat(document.getElementById(`parkFeeChild${i}`).value) || 0;
+
+        const adults = parseInt(document.getElementById(`adults${i}`).value) || 0;
+        const children = parseInt(document.getElementById(`children${i}`).value) || 0;
+
+        const vehicleGuideCostPerDay = parseFloat(document.getElementById(`vehicleGuideCostPerDay${i}`).value) || 0;
+        const receivingCosts = parseFloat(document.getElementById(`receivingCosts${i}`).value) || 0;
+        const unforeseenCosts = parseFloat(document.getElementById(`unforeseenCosts${i}`).value) || 0;
+
+        const accommodationCost = (singleRoomRate * singleRooms) + (doubleRoomRate * doubleRooms) +
+                                  (tripleRoomRate * tripleRooms) + (quadRoomRate * quadRooms);
+
+        const parkFees = (parkFeeAdult * adults) + (parkFeeChild * children);
+
+        const vehicleGuideCost = vehicleGuideCostPerDay;
+
+        const baseCost = accommodationCost + parkFees + vehicleGuideCost;
+
+        const otherCosts = receivingCosts + unforeseenCosts;
+
+        totalCostPrice += baseCost + otherCosts;
+
+        totalTravelers += (singleRooms * 1) + (doubleRooms * 2) + (tripleRooms * 3) + (quadRooms * 4);
+      }
+
+      const profit = totalCostPrice * 0.20;
+      const tourRateBeforeVAT = totalCostPrice + profit;
+      const vat = tourRateBeforeVAT * 0.18;
+      const finalTourRate = tourRateBeforeVAT + vat;
+      const finalRatePerPerson = totalTravelers ? (finalTourRate / totalTravelers) : 0;
+
+      document.getElementById('results').innerHTML = `
+        <h3>Results:</h3>
+        <p><strong>Total Cost Price:</strong> $${totalCostPrice.toFixed(2)}</p>
+        <p><strong>Tour Rate Before VAT:</strong> $${tourRateBeforeVAT.toFixed(2)}</p>
+        <p><strong>VAT (18%):</strong> $${vat.toFixed(2)}</p>
+        <p><strong>Final Tour Rate:</strong> $${finalTourRate.toFixed(2)}</p>
+        <p><strong>Final Rate Per Person:</strong> $${finalRatePerPerson.toFixed(2)}</p>
+      `;
+    }
+
+    function resetForm() {
+      document.getElementById('daysContainer').innerHTML = '';
+      document.getElementById('results').innerHTML = '';
+      dayCount = 0;
+    }
+  </script>
+
+  <button onclick="calculateTourPrice()">Calculate Tour Price</button>
+
+</body>
+</html>
