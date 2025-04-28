@@ -4,41 +4,115 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tour Price Calculator</title>
+
+  <!-- Adobe Venice Blvd Font -->
+  <link rel="stylesheet" href="https://use.typekit.net/vli3ijn.css">
+
   <style>
-    body { 
-      font-family: Arial, sans-serif; 
-      padding: 20px; 
-      max-width: 800px; 
-      margin: auto; 
-      background-color: #f35e29; /* Background color */
+    body {
+      font-family: "venice-blvd", sans-serif;
+      background-color: #f35e29;
+      margin: 0;
+      padding: 30px 20px;
+      color: #333;
+      max-width: 900px;
+      margin: auto;
     }
-    input { margin: 5px 0; padding: 8px; width: 100%; }
-    label { font-weight: bold; margin-top: 10px; display: block; }
-    button { 
-      margin-top: 10px; 
-      padding: 10px 20px; 
-      background-color: #22A9E6; /* Updated button color */
-      color: white; 
-      border: none; 
-      cursor: pointer; 
+
+    h1 {
+      font-size: 2.5rem;
+      text-align: center;
+      color: white;
+      margin-bottom: 30px;
+      font-weight: 900;
     }
-    button:hover { 
-      background-color: #1a87c4; /* Darker shade for hover effect */
+
+    #daysContainer {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
     }
-    .result { margin-top: 20px; padding: 10px; background-color: #f4f4f4; }
-    .day-block { border: 1px solid #ccc; padding: 10px; margin-top: 10px; }
+
+    .day-block {
+      background: #f9f9f9;
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 20px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    }
+
+    h2 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 15px;
+      color: #333;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-top: 12px;
+      margin-bottom: 4px;
+      font-size: 0.95rem;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-family: "venice-blvd", sans-serif;
+      margin-bottom: 12px;
+    }
+
+    button {
+      background-color: #22A9E6;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      margin: 10px 5px 0 0;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-family: "venice-blvd", sans-serif;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #198fca;
+    }
+
+    .result {
+      margin-top: 30px;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+      font-size: 1.1rem;
+    }
+
+    .result p {
+      margin: 10px 0;
+      font-weight: 600;
+    }
   </style>
 </head>
+
 <body>
 
   <h1>Tour Price Calculator</h1>
 
   <div id="daysContainer">
-    <!-- Days will be added here dynamically -->
+    <!-- Dynamic travel days will be added here -->
   </div>
 
-  <button onclick="addDay()">Add Travel Day</button>
-  <button onclick="resetForm()">Reset All</button>
+  <div style="margin-top: 20px;">
+    <button onclick="addDay()">Add Travel Day</button>
+    <button onclick="calculateTourPrice()">Calculate Tour Price</button>
+    <button onclick="resetForm()">Reset All</button>
+  </div>
 
   <div class="result" id="results"></div>
 
@@ -138,8 +212,6 @@
       dayCount = 0;
     }
   </script>
-
-  <button onclick="calculateTourPrice()">Calculate Tour Price</button>
 
 </body>
 </html>
